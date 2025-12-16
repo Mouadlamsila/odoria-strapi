@@ -9,11 +9,7 @@
   "options": {
     "draftAndPublish": false
   },
-  "pluginOptions": {
-    "i18n": {
-      "localized": false
-    }
-  },
+  "pluginOptions": {},
   "attributes": {
     "size": {
       "type": "string"
@@ -29,6 +25,12 @@
       "relation": "manyToOne",
       "target": "api::product.product",
       "inversedBy": "productSizes"
+    },
+    "pack_products": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::pack-product.pack-product",
+      "mappedBy": "product_sizes"
     }
   }
 }

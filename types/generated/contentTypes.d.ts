@@ -690,6 +690,41 @@ export interface ApiOrderOrder extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiPackProductPackProduct extends Struct.CollectionTypeSchema {
+  collectionName: 'pack_products';
+  info: {
+    displayName: 'Pack Product';
+    pluralName: 'pack-products';
+    singularName: 'pack-product';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::pack-product.pack-product'
+    > &
+      Schema.Attribute.Private;
+    maxQty: Schema.Attribute.Integer;
+    minQty: Schema.Attribute.Integer;
+    pack: Schema.Attribute.Relation<'manyToOne', 'api::pack.pack'>;
+    product: Schema.Attribute.Relation<'manyToOne', 'api::product.product'>;
+    product_sizes: Schema.Attribute.Relation<
+      'manyToMany',
+      'api::product-size.product-size'
+    >;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiPackPack extends Struct.CollectionTypeSchema {
   collectionName: 'packs';
   info: {
@@ -722,8 +757,11 @@ export interface ApiPackPack extends Struct.CollectionTypeSchema {
       'oneToMany',
       'api::order-item.order-item'
     >;
+    pack_products: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::pack-product.pack-product'
+    >;
     price: Schema.Attribute.Integer;
-    products: Schema.Attribute.Relation<'manyToMany', 'api::product.product'>;
     promotionRules: Schema.Attribute.Component<
       'marketing.promotion-rule',
       false
@@ -746,11 +784,6 @@ export interface ApiProductSizeProductSize extends Struct.CollectionTypeSchema {
   options: {
     draftAndPublish: false;
   };
-  pluginOptions: {
-    i18n: {
-      localized: false;
-    };
-  };
   attributes: {
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
@@ -761,6 +794,10 @@ export interface ApiProductSizeProductSize extends Struct.CollectionTypeSchema {
       'api::product-size.product-size'
     > &
       Schema.Attribute.Private;
+    pack_products: Schema.Attribute.Relation<
+      'manyToMany',
+      'api::pack-product.pack-product'
+    >;
     price: Schema.Attribute.Integer;
     product: Schema.Attribute.Relation<'manyToOne', 'api::product.product'>;
     publishedAt: Schema.Attribute.DateTime;
@@ -810,7 +847,10 @@ export interface ApiProductProduct extends Struct.CollectionTypeSchema {
       'oneToMany',
       'api::order-item.order-item'
     >;
-    packs: Schema.Attribute.Relation<'manyToMany', 'api::pack.pack'>;
+    pack_products: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::pack-product.pack-product'
+    >;
     price: Schema.Attribute.Integer & Schema.Attribute.Required;
     productSizes: Schema.Attribute.Relation<
       'oneToMany',
@@ -1426,6 +1466,7 @@ declare module '@strapi/strapi' {
       'api::offer.offer': ApiOfferOffer;
       'api::order-item.order-item': ApiOrderItemOrderItem;
       'api::order.order': ApiOrderOrder;
+      'api::pack-product.pack-product': ApiPackProductPackProduct;
       'api::pack.pack': ApiPackPack;
       'api::product-size.product-size': ApiProductSizeProductSize;
       'api::product.product': ApiProductProduct;
