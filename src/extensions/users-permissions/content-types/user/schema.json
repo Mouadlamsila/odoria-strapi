@@ -95,6 +95,9 @@
       "relation": "oneToOne",
       "target": "api::cart.cart",
       "mappedBy": "user"
+    },
+    "phone": {
+      "type": "string"
     }
   }
 }
